@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BuildableTile : MonoBehaviour
 {
-    [SerializeField] private Transform towerPlacementTransform;
-    [SerializeField] private bool isOccupied;
-    
-    
+    public Transform towerPlacementTransform;
+    public bool isOccupied;
 }

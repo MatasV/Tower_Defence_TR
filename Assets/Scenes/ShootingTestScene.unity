@@ -2937,7 +2937,7 @@ MonoBehaviour:
   tileLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  towerPrefab: {fileID: 5989138828586990675, guid: 162b2100f93cd2e48bf6cf9e76f45080, type: 3}
+  towerPrefab: {fileID: 2531884289280751867, guid: 162b2100f93cd2e48bf6cf9e76f45080, type: 3}
 --- !u!4 &1694178158
 Transform:
   m_ObjectHideFlags: 0
