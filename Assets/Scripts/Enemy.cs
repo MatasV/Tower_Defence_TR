@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class Enemy : MonoBehaviour
     public bool isDead = false;
     public int health;
     [SerializeField] private Animator animator;
-
+    [SerializeField] private NavMeshAgent agent;
     public void GetHit(int damage)
     {
         if (isDead)
@@ -30,11 +31,15 @@ public class Enemy : MonoBehaviour
     {
         targetTransform = target;
         animator.SetBool("Run", true);
+        agent.SetDestination(targetTransform.position);
     }
 
     private void Update()
     {
-        MoveTowardsTarget();
+        if (targetTransform == null)
+        {
+            return;
+        }
         CheckDistanceToTarget();
     }
 
@@ -49,12 +54,7 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-    private void MoveTowardsTarget()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, speed * Time.deltaTime);
-    }
-
+    
     private void Die()
     {
         if (isDead)
