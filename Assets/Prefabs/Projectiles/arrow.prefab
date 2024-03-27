@@ -151,4 +151,4 @@ MonoBehaviour:
   speed: 10
   rb: {fileID: 7593126645209032479}
   destroyTime: 5
-  damage: 5
+  damage: 1
