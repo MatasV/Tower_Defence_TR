@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
             return;
         }
         health -= damage;
-        if (health <= 0)
+        if (health <= 0f)
         {
             Die();
         }
@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         }
         CheckDistanceToTarget();
     }
-
+    
     private void CheckDistanceToTarget()
     {
         if (Vector3.Distance(transform.position, targetTransform.position) < distanceToDestroy)
@@ -62,6 +62,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        agent.enabled = false;
+        
         isDead = true;
         animator.SetBool("Death", true);
         Destroy(gameObject, 3f); //todo get the required wait time from death animation
