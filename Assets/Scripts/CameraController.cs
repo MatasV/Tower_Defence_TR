@@ -1,9 +1,13 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.Windows;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 public class CameraController : MonoBehaviour
 {
+    #region old
+    /*
     [SerializeField] private float moveSpeed = 30f;
     [SerializeField] private Vector2 moveLimit; // x ir y
 
@@ -44,7 +48,7 @@ public class CameraController : MonoBehaviour
         Vector3 right = transform.right;
         right.y = 0f;
         right.Normalize();
-        
+
         Vector3 moveDirection = Vector3.zero;
 
         if (Input.GetKey(KeyCode.W))
@@ -78,5 +82,97 @@ public class CameraController : MonoBehaviour
         {
             transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
         }
+    }*/
+    #endregion
+    [SerializeField] private float camMovementSpeed;
+    [SerializeField] private float camRotationSpeed;
+    [SerializeField] private float _smoothing;
+    [SerializeField] private float camZoomSpeed;
+    [SerializeField] private Vector2 _zoomBounds;
+    [SerializeField] private Vector2 _cameraBounds;
+
+
+
+    private Vector3 _camPos;
+    private Vector3 _motionInput;
+    private float _camAngleX;
+    private float _camAngleY;
+    private float _currentAngleX;
+    private float _currentAngleY;
+
+    private void Awake()
+    {
+        _camAngleY = transform.eulerAngles.y;
+        _currentAngleX = _camAngleY;
+        _camAngleX= transform.eulerAngles.x;
+        _currentAngleX = _camAngleX;
+
+    }
+
+    private void Update()
+    {
+        HandleInput();
+        HandleCameraRotation();
+        HandleCameraZoom();
+        HandleCameraMovement();
+    }
+
+    private void HandleInput()
+    {
+        float x = UnityEngine.Input.GetAxisRaw("Horizontal");
+        float z = UnityEngine.Input.GetAxisRaw("Vertical");
+
+        Vector3 right = transform.right * x;
+        Vector3 forward = transform.forward * z;
+
+        _motionInput = (forward + right).normalized;
+
+        if (!UnityEngine.Input.GetMouseButton(2)) return;
+        {
+            _camAngleY += UnityEngine.Input.GetAxisRaw("Mouse X") * camRotationSpeed;
+            _camAngleX -= UnityEngine.Input.GetAxisRaw("Mouse Y") * camRotationSpeed;
+
+            _camAngleX = Mathf.Clamp(_camAngleX, -90f, 90f);
+        }
+    }
+
+    private void HandleCameraRotation()
+    {
+        _currentAngleY = Mathf.Lerp(_currentAngleY, _camAngleY, Time.deltaTime * _smoothing);
+        _currentAngleX = Mathf.Lerp(_currentAngleX, _camAngleX, Time.deltaTime * _smoothing);
+
+        transform.rotation = Quaternion.Euler(_currentAngleX, _currentAngleY, 0f);
+    }
+
+    private void HandleCameraZoom()
+    {
+        float zoomInput = UnityEngine.Input.GetAxis("Mouse ScrollWheel");
+        transform.Translate(Vector3.forward * zoomInput * camZoomSpeed);
+        _camPos = transform.position;
+
+        if (!ZoomIsInBounds(_camPos))
+        {
+            transform.position = _camPos.normalized * _zoomBounds.y;
+        }
+    }
+
+    private bool ZoomIsInBounds(Vector3 position)
+    {
+        return position.magnitude > _zoomBounds.x && position.magnitude < _zoomBounds.y;
+    }
+
+    private bool CameraIsInBounds(Vector3 position)
+    {
+        return position.x > -_cameraBounds.x &&
+               position.x < _cameraBounds.x &&
+               position.z > -_cameraBounds.y &&
+               position.z < _cameraBounds.y;
+    }
+
+    private void HandleCameraMovement()
+    {
+        Vector3 nextTargetPosition = _camPos + _motionInput * camMovementSpeed;
+        if (CameraIsInBounds(nextTargetPosition)) _camPos = nextTargetPosition;
+        transform.position = Vector3.Lerp(transform.position, _camPos, Time.deltaTime * _smoothing);
     }
 }

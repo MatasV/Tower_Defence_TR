@@ -1987,12 +1987,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de905eaf390b9e94cbe4cbbe92b5f1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
-  moveLimit: {x: 5, y: 5}
-  scrollSpeed: 250
-  minY: 2
-  maxY: 5
-  rotationSpeed: 150
+  camMovementSpeed: 15
+  camRotationSpeed: 15
+  _smoothing: 5
+  camZoomSpeed: 15
+  _zoomBounds: {x: 0.5, y: 15}
+  _cameraBounds: {x: 30, y: 30}
 --- !u!1001 &1143474234
 PrefabInstance:
   m_ObjectHideFlags: 0
