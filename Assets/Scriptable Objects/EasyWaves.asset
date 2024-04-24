@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586d6a7418023c7459d7cfa4d5184869, type: 3}
   m_Name: EasyWaves
   m_EditorClassIdentifier: 
-  WaveCount: 
+  WaveCount: 010000000200000003000000

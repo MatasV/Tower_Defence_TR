@@ -27,13 +27,6 @@ public class WaveManager : MonoBehaviour
         currentWave++;
     }
 
-    public IEnumerator StartPause()
-    {
-        isPaused = true;
-        yield return new WaitForSeconds(pauseDuration);
-        isPaused = false;
-    }
-
     public bool IsPaused()
     {
         return isPaused;

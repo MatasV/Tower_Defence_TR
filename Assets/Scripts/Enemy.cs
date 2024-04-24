@@ -62,6 +62,8 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        EnemySpawnerController.Instance.EnemyDied();
+        
         agent.enabled = false;
         
         isDead = true;
